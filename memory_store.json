@@ -1,0 +1,39 @@
+{
+  "preferences": {
+    "name": "Amjath"
+  },
+  "past_summaries": [
+    {
+      "timestamp": "2026-04-07 10:31",
+      "summary": "1. Key Topics: Personal Introduction, Mathematical Calculations, Geography (Capital of Palestine)\n2. User Intent: Seeking information about mathematical calculations and geographical facts.\n3. Important Facts about the User: Name - Amjath Hussain, Age - 20 years old."
+    },
+    {
+      "timestamp": "2026-04-07 10:36",
+      "summary": "1. Key Topics: Protein Diet Plan, Age, Weight\n2. User Intent: Seeking advice for a personalized protein diet plan based on age and weight.\n3. Important Facts about the User: Amjath is a 21-year-old individual weighing 85 kg."
+    },
+    {
+      "timestamp": "2026-04-07 10:41",
+      "summary": "User: Hi I am Amjath\nAgent: Welcome, Amjath! How can I help you today? I'm here to assist with your questions and provide information on various topics.\n"
+    },
+    {
+      "timestamp": "2026-04-07 10:50",
+      "summary": "User: what is my name?\nAgent: I'm sorry, but I don't have your name saved yet. Let me know if you'd like to share it with me!\n"
+    },
+    {
+      "timestamp": "2026-04-07 11:00",
+      "summary": "User: what is my name?\nAgent: Your name is Amjath.\nUser: what is my age?\nAgent: Your age is 21.\nUser: tell me about the diet plan i have asked you\nAgent: Here are some general guidelines for a protein-rich diet plan suitable for a 21-year-old weighing 85 kg:\n\n1. Aim for 1.6 grams of protein per kilo"
+    },
+    {
+      "timestamp": "2026-04-08 15:06",
+      "summary": "User: What is (987654321 * 123456789) + 567890?\nAgent: The result of (987654321 * 123456789) + 567890 is 121932631113203159.\nUser: What is capital of Egypt, and what is 680000 * 890000?\nAgent: Agent stopped due to iteration limit or time limit.\nUser: What\u2019s the weather in Chennai?\nAgent: To find out"
+    },
+    {
+      "timestamp": "2026-04-08 15:24",
+      "summary": "User: What\u2019s the weather in Chennai?\nAgent: The weather in Chennai is currently 33.94\u00b0C with few clouds.\nUser: What\u2019s the weather in Trichy?\nAgent: Agent stopped due to iteration limit or time limit.\nUser: What\u2019s the weather in Tiruchirappalli?\nAgent: The weather in Tiruchirappalli is currently 39.0"
+    },
+    {
+      "timestamp": "2026-04-08 19:12",
+      "summary": "User: What is the current weather in Chennai?\nAgent: The current weather in Chennai is 30.58\u00b0C with mist.\nUser: What is the current weather in Trichy?\nAgent: The current weather in Trichy is 34.05\u00b0C with scattered clouds.\n"
+    }
+  ]
+}

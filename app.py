@@ -1,11 +1,8 @@
-"""
-app.py  —  Clean Streamlit UI for ReAct Agent (mistral via Ollama)
-Run:  streamlit run app.py
-"""
 
 import time
 import streamlit as st
 from langchain.callbacks.base import BaseCallbackHandler
+from agent import langfuse_handler
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -193,58 +190,71 @@ with chat_col:
         with st.chat_message("assistant", avatar="🤖"):
             with st.spinner("Thinking…"):
                 try:
-                    cb       = TraceCallback()
-                    executor = build_agent_executor()
-                    result   = executor.invoke(
-                        {"input": user_input},
-                        config={"callbacks": [cb]},
-                    )
-                    final = result.get("output", "I couldn't generate a response.")
-                    st.markdown(final)
-
-                    tools_used = [s["name"] for s in st.session_state.tool_trace]
-                    if tools_used:
-                        chips = " · ".join(f"{tool_icon(t)} `{t}`" for t in tools_used)
-                        st.caption(f"Tools used: {chips}")
-
-                    st.session_state.messages.append({
-                        "role":       "assistant",
-                        "content":    final,
-                        "tools_used": tools_used,
-                    })
-                    st.session_state.session_outputs.append(final)
-
-                    # Rough token estimate (Ollama doesn't expose counts directly)
-                    st.session_state.token_prompt     += len(user_input.split()) * 2
-                    st.session_state.token_completion += len(final.split())
-
+                    from rails import apply_input_rails, check_output_safety
+                    # Input rails
+                    passed, rejection = apply_input_rails(user_input)
+                    if not passed:
+                        st.warning(rejection)
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": rejection,
+                            "tools_used": [],
+                            })
+                        st.session_state.session_outputs.append(rejection)
+                    else:
+                        # REPLACE with graph invocation:
+                        from graph import compiled_graph
+                        cb = TraceCallback()
+                        initial_state = {
+                            "user_input":       user_input,
+                            "processed_input":  "",
+                            "agent_output":     "",
+                            "final_output":     "",
+                            "tools_used":       [],
+                            "blocked":          False,
+                            "rejection_reason": "",
+                            "needs_approval":   False,
+                            "approved":         False,
+                            }
+                        # Handle human approval in Streamlit via a dialog
+                        if "pending_approval" not in st.session_state:
+                            st.session_state.pending_approval = None
+                            result = compiled_graph.invoke(initial_state)
+                            if result["blocked"]:
+                                st.warning(result["rejection_reason"])
+                                st.session_state.messages.append({
+                                    "role": "assistant",
+                                    "content": result["rejection_reason"],
+                                    "tools_used": [],
+                                    })
+                                st.session_state.session_outputs.append(result["rejection_reason"])
+                            else:
+                                final = result["final_output"]
+                                st.markdown(final)
+                                tools_used = result.get("tools_used", [])
+                                if tools_used:
+                                    chips = " · ".join(f"{tool_icon(t)} `{t}`" for t in tools_used)
+                                    st.caption(f"Tools used: {chips}")
+                                    st.session_state.messages.append({
+                                        "role":       "assistant",
+                                        "content":    final,
+                                        "tools_used": tools_used,
+                                        })
+                                    st.session_state.session_outputs.append(final)
+                            
+                            tools_used = [s["name"] for s in st.session_state.tool_trace]
+                            if tools_used:
+                                chips = " · ".join(f"{tool_icon(t)} `{t}`" for t in tools_used)
+                                st.caption(f"Tools used: {chips}")
+                                st.session_state.messages.append({
+                                    "role":       "assistant",
+                                    "content":    final,
+                                    "tools_used": tools_used,
+                                    })
+                                st.session_state.session_outputs.append(final)
                 except Exception as e:
                     err = f"⚠️ Error: {e}"
                     st.error(err)
                     st.session_state.messages.append({"role": "assistant", "content": err})
 
         st.rerun()
-
-
-# ── RIGHT: Tool trace ─────────────────────────────────────────────────────────
-with trace_col:
-    st.markdown("#### Tool trace")
-
-    # Reasoning box
-    st.info(st.session_state.reasoning, icon="💭")
-
-    if not st.session_state.tool_trace:
-        st.caption("No tools called yet this turn.")
-    else:
-        for step in st.session_state.tool_trace:
-            badge = status_badge(step["status"])
-            icon  = tool_icon(step["name"])
-            label = f"{badge} {icon} **{step['name']}** — {step['elapsed']}"
-            with st.expander(label, expanded=True):
-                st.markdown(f"**Input:** `{step['input']}`")
-                if step["output"]:
-                    st.markdown(f"**Output:** {step['output']}")
-                if step["status"] == "error":
-                    st.error("Tool returned an error")
-
-    st.divider()

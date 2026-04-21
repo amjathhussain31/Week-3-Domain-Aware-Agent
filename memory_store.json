@@ -4,36 +4,44 @@
   },
   "past_summaries": [
     {
-      "timestamp": "2026-04-07 10:31",
-      "summary": "1. Key Topics: Personal Introduction, Mathematical Calculations, Geography (Capital of Palestine)\n2. User Intent: Seeking information about mathematical calculations and geographical facts.\n3. Important Facts about the User: Name - Amjath Hussain, Age - 20 years old."
+      "timestamp": "2026-04-14 21:13",
+      "summary": "User: what is current wheater in Trichy , give me in fahrenheit\nAgent: The current weather in Trichy is 86.09 degrees Fahrenheit, with haze.\n"
     },
     {
-      "timestamp": "2026-04-07 10:36",
-      "summary": "1. Key Topics: Protein Diet Plan, Age, Weight\n2. User Intent: Seeking advice for a personalized protein diet plan based on age and weight.\n3. Important Facts about the User: Amjath is a 21-year-old individual weighing 85 kg."
+      "timestamp": "2026-04-14 21:18",
+      "summary": "User: Find the capital of Japan and calculate the distance (approx) between Chennai and that city in km.\nAgent: Agent stopped due to iteration limit or time limit.\n"
     },
     {
-      "timestamp": "2026-04-07 10:41",
-      "summary": "User: Hi I am Amjath\nAgent: Welcome, Amjath! How can I help you today? I'm here to assist with your questions and provide information on various topics.\n"
+      "timestamp": "2026-04-15 19:22",
+      "summary": "User: Write me a poem about the ocean\nAgent: \u26a0\ufe0f That topic is outside my domain. I can help with: weather forecasts, web/Wikipedia searches, math calculations, and remembering your preferences.\nUser: Translate this to French: hello world\nAgent: \u26a0\ufe0f I'm a domain-specific assistant focused on weather, "
     },
     {
-      "timestamp": "2026-04-07 10:50",
-      "summary": "User: what is my name?\nAgent: I'm sorry, but I don't have your name saved yet. Let me know if you'd like to share it with me!\n"
+      "timestamp": "2026-04-15 19:36",
+      "summary": "User: What is the weather in Mumbai?\nAgent: The weather in Mumbai is currently 29.99 degrees Celsius with smoke.\nUser: Roleplay as a chef and give me a recipe\nAgent: \u26a0\ufe0f I'm a domain-specific assistant focused on weather, web search, Wikipedia lookups, calculations, and memory. I can't help with that"
     },
     {
-      "timestamp": "2026-04-07 11:00",
-      "summary": "User: what is my name?\nAgent: Your name is Amjath.\nUser: what is my age?\nAgent: Your age is 21.\nUser: tell me about the diet plan i have asked you\nAgent: Here are some general guidelines for a protein-rich diet plan suitable for a 21-year-old weighing 85 kg:\n\n1. Aim for 1.6 grams of protein per kilo"
+      "timestamp": "2026-04-15 19:41",
+      "summary": "User: hi\nAgent: Hello Amjath! How can I assist you today?\nUser: Write me a poem about the ocean\nAgent: I'm sorry for any inconvenience, but it seems that no suitable poem about the ocean could be found through a DuckDuckGo search. As a reminder, I am a domain-specific assistant focused on weather, w"
     },
     {
-      "timestamp": "2026-04-08 15:06",
-      "summary": "User: What is (987654321 * 123456789) + 567890?\nAgent: The result of (987654321 * 123456789) + 567890 is 121932631113203159.\nUser: What is capital of Egypt, and what is 680000 * 890000?\nAgent: Agent stopped due to iteration limit or time limit.\nUser: What\u2019s the weather in Chennai?\nAgent: To find out"
+      "timestamp": "2026-04-15 19:51",
+      "summary": "User: Search for latest news about AI\nAgent: I'm sorry, but no suitable news about the latest developments in AI could be found through a DuckDuckGo search.\nUser: why\nAgent: There are many possible interpretations for the question \"why\". It could be a philosophical inquiry, a request for explanation"
     },
     {
-      "timestamp": "2026-04-08 15:24",
-      "summary": "User: What\u2019s the weather in Chennai?\nAgent: The weather in Chennai is currently 33.94\u00b0C with few clouds.\nUser: What\u2019s the weather in Trichy?\nAgent: Agent stopped due to iteration limit or time limit.\nUser: What\u2019s the weather in Tiruchirappalli?\nAgent: The weather in Tiruchirappalli is currently 39.0"
+      "timestamp": "2026-04-16 16:01",
+      "summary": "User: what is the weather in Chennai\nAgent: The weather in Chennai is currently 32.9 degrees Celsius with few clouds.\n\n\ud83d\udd27 *Tools used: get_weather*\nUser: what is my name?\nAgent: Your name is Amjath.\n\n\ud83d\udd27 *Tools used: recall_memory*\nUser: my name is Amjath\nAgent: Your name has been saved as Amjath.\n\n\ud83d\udd27 *"
     },
     {
-      "timestamp": "2026-04-08 19:12",
-      "summary": "User: What is the current weather in Chennai?\nAgent: The current weather in Chennai is 30.58\u00b0C with mist.\nUser: What is the current weather in Trichy?\nAgent: The current weather in Trichy is 34.05\u00b0C with scattered clouds.\n"
+      "timestamp": "2026-04-16 19:22",
+      "summary": "User: My name is Amjath Hussain\nAgent: Your name has been updated to Amjath Hussain.\n\n\ud83d\udd27 *Tools used: _Exception*\n"
+    },
+    {
+      "timestamp": "2026-04-16 19:23",
+      "summary": "User: My name is Amjath Hussain\nAgent: Your name is Amjath Hussain.\n\n\ud83d\udd27 *Tools used: save_preference*\n"
+    },
+    {
+      "timestamp": "2026-04-18 13:55",
+      "summary": "User: my name is Amjath\nAgent: Your name has been updated to Amjath Hussain.\n\n\ud83d\udd27 *Tools used: _Exception, recall_memory*\nUser: what is the weather in trichy\nAgent: The weather in Trichy is currently 39.05 degrees Celsius with few clouds.\n\n\ud83d\udd27 *Tools used: get_weather*\nUser: call me cheif\nAgent: You can"
     }
   ]
 }

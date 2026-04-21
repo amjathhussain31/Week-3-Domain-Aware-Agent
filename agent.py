@@ -13,11 +13,14 @@ from langchain_community.utilities import WikipediaAPIWrapper
 
 import warnings
 from langchain._api import LangChainDeprecationWarning
+from langfuse.callback import CallbackHandler as LangfuseCallbackHandler
 
 warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
 
 from dotenv import load_dotenv
 load_dotenv()  # loads .env file
+
+langfuse_handler = LangfuseCallbackHandler()
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
@@ -222,6 +225,7 @@ Final Answer: your complete answer to the original question
 
 CRITICAL INSTRUCTIONS:
 
+- IF you got the fianl answer to the question immediately return the final answer
 - NEVER write Action like this: wikipedia('query')
 - ALWAYS use EXACT format:
 
@@ -238,8 +242,22 @@ WRONG:
 Action: wikipedia('Capital of Egypt')
 
 ---
-
 If you break this format, the system will fail.
+
+CRITICAL RULES:
+
+- NEVER output Final Answer together with Action
+- ALWAYS follow this sequence strictly:
+
+Thought → Action → Action Input → Observation
+
+ONLY after all actions are completed:
+
+Thought: I now know the final answer
+Final Answer: ...
+
+- If you skip Observation, the system will break
+- If you give Final Answer early, the system will break
 
 Begin!
 
@@ -264,7 +282,7 @@ short_term = ConversationBufferWindowMemory(
 #  LLM + AGENT 
 # ══════════════════════════════════════════════════════════════════════════════
 
-llm = ChatOllama(model="mistral", temperature=0)
+llm = ChatOllama(model="mistral", temperature=0, streaming=True)
 
 
 def build_agent_executor() -> AgentExecutor:
@@ -277,7 +295,7 @@ def build_agent_executor() -> AgentExecutor:
         memory=short_term,
         verbose=True,
         handle_parsing_errors=True,
-        max_iterations=5,
+        max_iterations=8,
     )
     
 def generate_summary_with_llm(conversation: str) -> str:
@@ -326,8 +344,10 @@ def save_session_summary(session_inputs: list[str], session_outputs: list[str]):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def main():
+    from graph import compiled_graph   # ← import here to avoid circular imports
+
     print("\n" + "═" * 55)
-    print("   ReAct Agent  ")
+    print("   ReAct Agent  (LangGraph)")
     print("═" * 55)
 
     name = long_term["preferences"].get("name", "")
@@ -340,7 +360,7 @@ def main():
 
     print("  Type 'quit' / 'exit' / 'q' to end the session.\n")
 
-    session_inputs = []
+    session_inputs  = []
     session_outputs = []
 
     while True:
@@ -354,19 +374,36 @@ def main():
 
         if user_input.lower() in {"quit", "exit", "q"}:
             save_session_summary(session_inputs, session_outputs)
+            langfuse_handler.flush()
             greeting = f"Bye, {name}!" if name else "Bye!"
             print(f"\n  {greeting}\n")
             break
 
         session_inputs.append(user_input)
 
+        # Initial state fed into the graph
+        initial_state = {
+            "user_input":       user_input,
+            "processed_input":  "",
+            "agent_output":     "",
+            "final_output":     "",
+            "tools_used":       [],
+            "blocked":          False,
+            "rejection_reason": "",
+            "needs_approval":   False,
+            "approved":         False,
+        }
+
         try:
-            # Rebuild executor each turn so long-term memory stays fresh in prompt
-            agent_executor = build_agent_executor()
-            result = agent_executor.invoke({"input": user_input})
-            final = result.get("output", "I couldn't generate a response.")
-            session_outputs.append(final)
-            print(f"\n  Agent: {final}\n")
+            result = compiled_graph.invoke(initial_state)
+
+            if result["blocked"]:
+                reply = result["rejection_reason"]
+            else:
+                reply = result["final_output"]
+
+            print(f"\n  Agent: {reply}\n")
+            session_outputs.append(reply)
 
         except Exception as e:
             print(f"\n  [Error] {e}\n")
